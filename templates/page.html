@@ -1,0 +1,56 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="wrapper-layout main">
+	<div class="wrapper-menu">
+		<ul class="menu-list">
+			<li><a href="javascript:void(0)" id="playlist-button"><i class="fa fa-plus"></i></a>
+			<li><a href="http://enko.duckdns.org:8030/logout"><i class="fa fa-sign-out"></i></a></li>
+		</ul>
+	</div>
+	<div class="wrapper-chat">
+		<div class="std-grid">
+			<div class="std-row">
+				<div class="std-xs-12">
+					<h4>Usuarios Conectados</h4>
+					<ul id="users_conected" class="users-list animated-list-slow">
+
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="wrapper-main home">
+		<div class="std-grid">
+			<div class="std-row">
+				<div class="std-xs-12">
+
+					<div class="form-group">
+						<input type="text" class="std-input-search"  id="song">
+						<span class="std-button std-button-search"  id="buscar">
+							<span class="fa fa-search"></span>
+						</span>
+					</div>
+				</div>
+				<div class="std-xs-12">
+					<div id="show_playlist">
+						<ul class="playlist-list animated-list-slow">
+						{% for playlist in playlists %}
+							<li>
+							<a href="playlist/{{ playlist.uuid }}">{{ playlist.title }}</a>
+								<i>{{ playlist.user.name }}</i>
+								<span class="share fa fa-share-alt" data-playlist=""></span>
+							</li>
+						{% else %}
+							<li><em>Unbelievable.  No entries here so far</em></li>
+						{% endfor %}
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+{% endblock %}

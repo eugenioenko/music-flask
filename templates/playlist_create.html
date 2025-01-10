@@ -1,0 +1,22 @@
+<form method="POST" action=""  id="create_playlist">
+	<div class="std-row">
+		<div class="std-xs-12">
+			<div class="std-form-group">
+				<h2>Create Playlist</h2>
+			</div>
+			{{ form.csrf_token }}
+			<div class="std-form-group">
+				{{ form.name.label }} {{ with_errors(form.name, class_='std-text-field') }}
+			</div>
+			<div class="std-form-group">
+				{{ form.privacy.label }} {{ with_errors(form.privacy, class_='std-text-field') }}
+			</div>
+			<div class="std-form-group">
+				{{ form.style.label }} {{ with_errors(form.style, class_='std-text-field') }}
+			</div>
+		</div>
+		<div class="std-xs-12 text-right">
+			<button type="button"  class="std-button modal" id="form_create_playlist_submit">Create</button>
+		</div>
+	</div>
+</form>

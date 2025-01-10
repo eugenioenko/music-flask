@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app-music-flask">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<title>Music Flask</title>
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+	<link href="{{ static_url }}css/perfect-scrollbar.min.css" rel="stylesheet">
+	<link href="{{ static_url }}css/styles.css?v=1.5.0.0" rel="stylesheet">
+	<script>
+		var chat_bubble_who = "{{current_user}}";
+		var YTConfig = {
+	        'host': 'https://www.youtube.com'
+	    };
+	</script>
+	<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+	<script src="https://s.ytimg.com/yts/jsbin/www-widgetapi-vflt7SI_I/www-widgetapi.js"></script>
+	<script src="{{ static_url }}js/perfect-scrollbar.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.2/angular.min.js" type="text/javascript"></script>
+	<script src="{{ static_url }}js/app-music-flask.js?v=0.1.2.0"></script>
+
+</head>
+<body ng-controller="music-flask">
+	<!--
+	<div class="toggle-menu" id="toggle_menu" js-active="false">
+		<span></span>
+		<span></span>
+		<span></span>
+		<span></span>
+	</div>
+	-->
+	<div class="wrapper-bg" data-active="true" id="wrapper_bg_2" style="background-image: url({{ poster }})!important;"></div>
+	<div class="wrapper-bg" id="wrapper_bg_1" style=""></div>
+	<div class="wrapper-layout main">
+		<!--
+		<div class="wrapper-menu" id="left_menu" js-active="false">
+			<h3>{{ current_user.name }}<a href="profile"><i class="std-addon fa fa-edit"></i></a></h3>
+		</div>
+		-->
+		<div id="panel_left">
+			<ul id="panel_menu"  class="std-clearfix panel-menu left">
+				<li ng-click="setLMenu('chat');" class="chat" ng-class="lMenu ==  'chat' ? 'active' : '';"><i class="fa fa-wechat "></i></li>
+				<li ng-click="setLMenu('friends');" class="friends" ng-class="lMenu == 'friends' ? 'active' : '';"><i class="fa fa-users"></i></li>
+				<li ng-click="setLMenu('settings');" class="settings" ng-class="lMenu == 'settings' ? 'active' : '';"><i class="fa fa-gear"></i></li>
+				<li ng-click="setLMenu('info');" class="info" ng-class="lMenu == 'info' ? 'active' : '';"><i class="fa fa-info"></i></li>
+			</ul>
+			<!-- left panel chat -->
+			<div class="panel-tab left chat" ng-class="lMenu == 'chat' ? 'active' : '';">
+				<div id="chat">
+					<div id="chat_body_wrapper" ps-container>
+						<ul id="chat_body"></ul>
+					</div>
+					<div id="chat_input_group">
+						<div id="chat_icons" ng-class="iMenu == true ? 'active' : '' " ps-container>
+							<ul id="emoticon_list">
+								<li ng-click="chatSendIcon('~#@icon:adore!@#~');"><img src="{{static_url}}images/onion-head/emoticon/adore!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:adore2!@#~');"><img src="{{static_url}}images/onion-head/emoticon/adore2!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:adore3!@#~');"><img src="{{static_url}}images/onion-head/emoticon/adore3!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:ahhh!@#~');"><img src="{{static_url}}images/onion-head/emoticon/ahhh!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:ahhoo!@#~');"><img src="{{static_url}}images/onion-head/emoticon/ahhoo!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:amore!@#~');"><img src="{{static_url}}images/onion-head/emoticon/amore!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:angel!@#~');"><img src="{{static_url}}images/onion-head/emoticon/angel!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:baad!@#~');"><img src="{{static_url}}images/onion-head/emoticon/baad!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:baadd!@#~');"><img src="{{static_url}}images/onion-head/emoticon/baadd!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:bad!@#~');"><img src="{{static_url}}images/onion-head/emoticon/bad!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:bath!@#~');"><img src="{{static_url}}images/onion-head/emoticon/bath!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:beard!@#~');"><img src="{{static_url}}images/onion-head/emoticon/beard!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:bici!@#~');"><img src="{{static_url}}images/onion-head/emoticon/bici!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:birthd!@#~');"><img src="{{static_url}}images/onion-head/emoticon/birthd!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:buu!@#~');"><img src="{{static_url}}images/onion-head/emoticon/buu!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:bye!@#~');"><img src="{{static_url}}images/onion-head/emoticon/bye!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:cafe!@#~');"><img src="{{static_url}}images/onion-head/emoticon/cafe!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:calor!@#~');"><img src="{{static_url}}images/onion-head/emoticon/calor!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:cold2!@#~');"><img src="{{static_url}}images/onion-head/emoticon/cold2!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:com!@#~');"><img src="{{static_url}}images/onion-head/emoticon/com!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:cool!@#~');"><img src="{{static_url}}images/onion-head/emoticon/cool!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:cry!@#~');"><img src="{{static_url}}images/onion-head/emoticon/cry!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:cute!@#~');"><img src="{{static_url}}images/onion-head/emoticon/cute!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:dead!@#~');"><img src="{{static_url}}images/onion-head/emoticon/dead!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:desamor@#~');"><img src="{{static_url}}images/onion-head/emoticon/desamor.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:diplom!@#~');"><img src="{{static_url}}images/onion-head/emoticon/diplom!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:dolor2!@#~');"><img src="{{static_url}}images/onion-head/emoticon/dolor2!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:domir!@#~');"><img src="{{static_url}}images/onion-head/emoticon/domir!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:duele!@#~');"><img src="{{static_url}}images/onion-head/emoticon/duele!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:eee!@#~');"><img src="{{static_url}}images/onion-head/emoticon/eee!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:eso!@#~');"><img src="{{static_url}}images/onion-head/emoticon/eso!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:evil!@#~');"><img src="{{static_url}}images/onion-head/emoticon/evil!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:fan!@#~');"><img src="{{static_url}}images/onion-head/emoticon/fan!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:fiaca!@#~');"><img src="{{static_url}}images/onion-head/emoticon/fiaca!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:fiu!@#~');"><img src="{{static_url}}images/onion-head/emoticon/fiu!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:fiu2!@#~');"><img src="{{static_url}}images/onion-head/emoticon/fiu2!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:flute!@#~');"><img src="{{static_url}}images/onion-head/emoticon/flute!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:frio!@#~');"><img src="{{static_url}}images/onion-head/emoticon/frio!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:frio3!@#~');"><img src="{{static_url}}images/onion-head/emoticon/frio3!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:fuma!@#~');"><img src="{{static_url}}images/onion-head/emoticon/fuma!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:fumao!@#~');"><img src="{{static_url}}images/onion-head/emoticon/fumao!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:furioso@#~');"><img src="{{static_url}}images/onion-head/emoticon/furioso.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:fut!@#~');"><img src="{{static_url}}images/onion-head/emoticon/fut!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:genio!@#~');"><img src="{{static_url}}images/onion-head/emoticon/genio!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:ghost!@#~');"><img src="{{static_url}}images/onion-head/emoticon/ghost!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:gol!@#~');"><img src="{{static_url}}images/onion-head/emoticon/gol!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:guak!@#~');"><img src="{{static_url}}images/onion-head/emoticon/guak!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:haha!@#~');"><img src="{{static_url}}images/onion-head/emoticon/haha!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:happy!@#~');"><img src="{{static_url}}images/onion-head/emoticon/happy!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:harp!@#~');"><img src="{{static_url}}images/onion-head/emoticon/harp!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:help!@#~');"><img src="{{static_url}}images/onion-head/emoticon/help!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:hi!@#~');"><img src="{{static_url}}images/onion-head/emoticon/hi!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:hipno!@#~');"><img src="{{static_url}}images/onion-head/emoticon/hipno!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:hot!@#~');"><img src="{{static_url}}images/onion-head/emoticon/hot!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:hunter@#~');"><img src="{{static_url}}images/onion-head/emoticon/hunter.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:icons@#~');"><img src="{{static_url}}images/onion-head/emoticon/icons.txt"></li>
+								<li ng-click="chatSendIcon('~#@icon:ilove!@#~');"><img src="{{static_url}}images/onion-head/emoticon/ilove!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:inlove!@#~');"><img src="{{static_url}}images/onion-head/emoticon/inlove!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:jump!@#~');"><img src="{{static_url}}images/onion-head/emoticon/jump!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:killu!@#~');"><img src="{{static_url}}images/onion-head/emoticon/killu!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:kiss!@#~');"><img src="{{static_url}}images/onion-head/emoticon/kiss!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:latigo!@#~');"><img src="{{static_url}}images/onion-head/emoticon/latigo!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:lier!@#~');"><img src="{{static_url}}images/onion-head/emoticon/lier!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:llora!@#~');"><img src="{{static_url}}images/onion-head/emoticon/llora!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:loki!@#~');"><img src="{{static_url}}images/onion-head/emoticon/loki!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:look!@#~');"><img src="{{static_url}}images/onion-head/emoticon/look!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:mail!@#~');"><img src="{{static_url}}images/onion-head/emoticon/mail!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:mareo!@#~');"><img src="{{static_url}}images/onion-head/emoticon/mareo!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:moco!@#~');"><img src="{{static_url}}images/onion-head/emoticon/moco!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:muero!@#~');"><img src="{{static_url}}images/onion-head/emoticon/muero!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:muero2!@#~');"><img src="{{static_url}}images/onion-head/emoticon/muero2!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:ninja!@#~');"><img src="{{static_url}}images/onion-head/emoticon/ninja!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:noigo!@#~');"><img src="{{static_url}}images/onion-head/emoticon/noigo!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:nooo!@#~');"><img src="{{static_url}}images/onion-head/emoticon/nooo!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:nooo2!@#~');"><img src="{{static_url}}images/onion-head/emoticon/nooo2!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:nooo3!@#~');"><img src="{{static_url}}images/onion-head/emoticon/nooo3!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:nooo4!@#~');"><img src="{{static_url}}images/onion-head/emoticon/nooo4!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:nose!@#~');"><img src="{{static_url}}images/onion-head/emoticon/nose!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:ok!@#~');"><img src="{{static_url}}images/onion-head/emoticon/ok!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:out!@#~');"><img src="{{static_url}}images/onion-head/emoticon/out!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:out2!@#~');"><img src="{{static_url}}images/onion-head/emoticon/out2!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:pain!@#~');"><img src="{{static_url}}images/onion-head/emoticon/pain!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:pajaro!@#~');"><img src="{{static_url}}images/onion-head/emoticon/pajaro!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:patea!@#~');"><img src="{{static_url}}images/onion-head/emoticon/patea!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:pc!@#~');"><img src="{{static_url}}images/onion-head/emoticon/pc!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:pega!@#~');"><img src="{{static_url}}images/onion-head/emoticon/pega!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:pensar!@#~');"><img src="{{static_url}}images/onion-head/emoticon/pensar!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:perv!@#~');"><img src="{{static_url}}images/onion-head/emoticon/perv!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:perve!@#~');"><img src="{{static_url}}images/onion-head/emoticon/perve!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:piece!@#~');"><img src="{{static_url}}images/onion-head/emoticon/piece!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:pinche!@#~');"><img src="{{static_url}}images/onion-head/emoticon/pinche!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:play!@#~');"><img src="{{static_url}}images/onion-head/emoticon/play!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:pobe!@#~');"><img src="{{static_url}}images/onion-head/emoticon/pobe!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:pobe2!@#~');"><img src="{{static_url}}images/onion-head/emoticon/pobe2!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:pobe3!@#~');"><img src="{{static_url}}images/onion-head/emoticon/pobe3!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:pobresito@#~');"><img src="{{static_url}}images/onion-head/emoticon/pobresito.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:pofi!@#~');"><img src="{{static_url}}images/onion-head/emoticon/pofi!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:pofi2!@#~');"><img src="{{static_url}}images/onion-head/emoticon/pofi2!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:procar!@#~');"><img src="{{static_url}}images/onion-head/emoticon/procar!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:punch!@#~');"><img src="{{static_url}}images/onion-head/emoticon/punch!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:relax!@#~');"><img src="{{static_url}}images/onion-head/emoticon/relax!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:reno!@#~');"><img src="{{static_url}}images/onion-head/emoticon/reno!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:reno2!@#~');"><img src="{{static_url}}images/onion-head/emoticon/reno2!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:reno3!@#~');"><img src="{{static_url}}images/onion-head/emoticon/reno3!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:reno4!@#~');"><img src="{{static_url}}images/onion-head/emoticon/reno4!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:reta!@#~');"><img src="{{static_url}}images/onion-head/emoticon/reta!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:roja!@#~');"><img src="{{static_url}}images/onion-head/emoticon/roja!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:sarca2!@#~');"><img src="{{static_url}}images/onion-head/emoticon/sarca2!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:sarcas!@#~');"><img src="{{static_url}}images/onion-head/emoticon/sarcas!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:scared!@#~');"><img src="{{static_url}}images/onion-head/emoticon/scared!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:scarry!@#~');"><img src="{{static_url}}images/onion-head/emoticon/scarry!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:sera!@#~');"><img src="{{static_url}}images/onion-head/emoticon/sera!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:serious!@#~');"><img src="{{static_url}}images/onion-head/emoticon/serious!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:shampo!@#~');"><img src="{{static_url}}images/onion-head/emoticon/shampo!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:shock!@#~');"><img src="{{static_url}}images/onion-head/emoticon/shock!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:shock2!@#~');"><img src="{{static_url}}images/onion-head/emoticon/shock2!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:shock3!@#~');"><img src="{{static_url}}images/onion-head/emoticon/shock3!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:shora2!@#~');"><img src="{{static_url}}images/onion-head/emoticon/shora2!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:shora3!@#~');"><img src="{{static_url}}images/onion-head/emoticon/shora3!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:sick!@#~');"><img src="{{static_url}}images/onion-head/emoticon/sick!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:siii!@#~');"><img src="{{static_url}}images/onion-head/emoticon/siii!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:solo!@#~');"><img src="{{static_url}}images/onion-head/emoticon/solo!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:solo2!@#~');"><img src="{{static_url}}images/onion-head/emoticon/solo2!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:strees!@#~');"><img src="{{static_url}}images/onion-head/emoticon/strees!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:study!@#~');"><img src="{{static_url}}images/onion-head/emoticon/study!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:study2!@#~');"><img src="{{static_url}}images/onion-head/emoticon/study2!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:surprise!@#~');"><img src="{{static_url}}images/onion-head/emoticon/surprise!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:susp!@#~');"><img src="{{static_url}}images/onion-head/emoticon/susp!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:susto!@#~');"><img src="{{static_url}}images/onion-head/emoticon/susto!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:spider!@#~');"><img src="{{static_url}}images/onion-head/emoticon/spider!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:timi!@#~');"><img src="{{static_url}}images/onion-head/emoticon/timi!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:timi2!@#~');"><img src="{{static_url}}images/onion-head/emoticon/timi2!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:tintin!@#~');"><img src="{{static_url}}images/onion-head/emoticon/tintin!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:ueee!@#~');"><img src="{{static_url}}images/onion-head/emoticon/ueee!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:ueee2!@#~');"><img src="{{static_url}}images/onion-head/emoticon/ueee2!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:uhmm!@#~');"><img src="{{static_url}}images/onion-head/emoticon/uhmm!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:uuu!@#~');"><img src="{{static_url}}images/onion-head/emoticon/uuu!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:welco!@#~');"><img src="{{static_url}}images/onion-head/emoticon/welco!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:welco2!@#~');"><img src="{{static_url}}images/onion-head/emoticon/welco2!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:wet!@#~');"><img src="{{static_url}}images/onion-head/emoticon/wet!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:wiii!@#~');"><img src="{{static_url}}images/onion-head/emoticon/wiii!.gif"></li>
+								<li ng-click="chatSendIcon('~#@icon:yellou!@#~');"><img src="{{static_url}}images/onion-head/emoticon/yellou!.gif"></li>
+							</ul>
+						</div>
+						<div id="chat_input" contenteditable="true" ng-keydown="chatInputChange($event)"></div>
+						<div id="chat_send" ng-click="chatOpenIcons()"><i class="fa fa-smile-o"></i></div>
+					</div>
+				</div>
+			</div>
+			<!-- left panel friends -->
+			<div class="panel-tab left friends" ng-class="lMenu == 'friends' ? 'active' : '';">
+				<div class="std-grid">
+					<div class="std-row">
+						<div class="std-xs-12">
+							<h3>Friends Online<i class="std-addon fa fa-search"></i></h3>
+							<div class="std-scroll">
+								<ul id="users_friends" class="std-list">
+									<li ng-repeat="friend in friends.all">
+										<a href="[[ base_url + 'profile/' + friend.uuid ]]">
+											<span>[[ friend.name ]]</span>
+										</a>
+									</li>
+								</ul>
+							</div>
+							<h3>Friends<i class="std-addon fa fa-search"></i></h3>
+							<div class="std-scroll">
+								<ul id="users_friends" class="std-list">
+									<li ng-repeat="friend in friends.all">
+										<a href="[[ base_url + 'profile/' + friend.uuid ]]">
+											<span>[[ friend.name ]]</span>
+										</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- left panel settings -->
+			<div class="panel-tab left settings" ng-class="lMenu == 'settings' ? 'active' : '';">
+				<div class="std-grid">
+					<div class="std-row">
+
+					</div>
+				</div>
+			</div>
+			<div class="panel-tab left info" ng-class="lMenu == 'info' ? 'active' : '';">
+
+			</div>
+		</div>
+		<div class="wrapper-main home" id="panel_main">
+
+			<!-- window tab playlists -->
+			<section class="window-tab" ng-class="wMenu == 'playlists' ? 'active' : '';">
+				<div class="std-clearfix search-bar-group">
+					<input type="text" class="std-input-search" ng-model="form.playlist.term" placeholder="Search a playlist...">
+					<span class="std-btn-search">
+						<span class="fa fa-search"></span>
+					</span>
+				</div>
+				<div class="std-clearfix window-content window-content-playlists" id="window_content_1" ps-container>
+					<div class="std-grid">
+						<div class="std-row">
+							<div class="std-xs-12">
+								<ul id="playlist_list">
+									<li ng-click="modalShow('modal_palylist_create')">
+										<div class="std-xs-12">
+											<h2>Create a new Playlist</h3>
+										</div>
+									</li>
+									<li ng-repeat="playlist in playlists.public | filter : form.playlist.term" ng-click="loadPlaylist(playlist.uuid);">
+										<div class="std-xs-12">
+											<span class="user"> [[playlist.username]]</span>
+										</div>
+										<div class="std-xs-12">
+											<h3 class="name">[[playlist.name]]</h3>
+										</div>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+			<!-- window tab 2 -->
+			<section class="window-tab" ng-class="wMenu == 'songs' ? 'active' : '';">
+				<div class="std-clearfix search-bar-group">
+					<input type="text" class="std-input-search" ng-model="form.song.term" ng-keydown="searchBarKeypress($event)" placeholder="Search a song...">
+					<span class="std-btn-search" ng-click="searchSong()">
+						<span class="fa fa-search"></span>
+					</span>
+				</div>
+				<div class="std-clearfix window-content window-content-songs" id="window_content_2" ps-container>
+					<div class="std-grid">
+						<div class="std-row">
+							<div class="std-xs-12">
+								<ul class="playlist-results">
+									<li ng-repeat="song in songs.search | filter: {mbid: '!null'}" ng-click="searchVideo($index)">
+										<span class="title">[[song.name]] - [[song.artist]]</span>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+			<!-- window tab 3 -->
+			<section class="window-tab" ng-class="rMenu == 4 ? 'active' : '';">
+				<div class="std-clearfix window-content window-content-4">
+					<h1>window 4</h1>
+				</div>
+			</section>
+			<section class="window-tab" ng-class="wMain == 5 ? 'active' : '';">
+				<div class="std-clearfix window-content window-content-5">
+					<div class="std-grid profile">
+						<div class="std-row">
+							<div class="std-xs-12 std-sm-4">
+								<img src="" class="img-responsive">
+							</div>
+							<div class="std-xs-12 std-sm-8">
+								<div class="username">[[profile.username]]</div>
+							</div>
+							<div class="std-xs-12">
+								<div class="phrase">[[profile.phrase]]</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+		</div>
+
+		<div id="panel_playlist" class="home">
+			<ul id="playlist_menu" class="std-clearfix panel-menu right">
+				<li ng-click="setRMenu('playlists'); setWMenu('playlists');" class="playlists" ng-class="rMenu == 'playlists' ? 'active' : '';"><i class="fa fa-list"></i></li>
+				<li ng-click="setRMenu('songs'); setWMenu('songs');" class="songs" ng-class="rMenu == 'songs' ? 'active' : '';"><i class="fa fa-music"></i></li>
+				<li ng-click="setRMenu('player');" class="player" ng-class="rMenu == 'player' ? 'active' : '';"><i class="fa fa-play"></i></li>
+			</ul>
+
+			<!-- right panel playlists list -->
+			<section class="panel-tab right playlists" ng-class="rMenu == 'playlists' ? 'active' : '';">
+				<div class="std-grid">
+					<div class="std-row">
+						<div class="std-xs-12">
+							<h3>My Playlists <i class="std-addon fa fa-plus" ng-click="modalShow('modal_palylist_create')"></i></h3>
+							<div class="std-scroll">
+								<ul id="users_playlists" class="std-list">
+									<li ng-repeat="playlist in playlists.user">
+										<a href="javascript:void(0)" ng-click="loadPlaylist(playlist.uuid);">
+											<span>[[playlist.name]]</span>
+										</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+						<div class="std-separator-10"></div>
+						<div class="std-xs-12">
+							<h3>Messages</h3>
+							{% with messages = get_flashed_messages() %}
+								{% if messages %}
+								<h3>Messages</h3>
+								<div class="std-scroll">
+									<ul class="std-list">
+										{% for message in messages %}
+										<li>{{ message }}</li>
+										{% endfor %}
+									</ul>
+								</div>
+								{% endif %}
+							{% endwith %}
+						</div>
+					</div>
+				</div>
+			</section>
+			<!-- right panel playlist songs -->
+			<section class="panel-tab right songs" ng-class="rMenu == 'songs' ? 'active' : ''" ps-container>
+				<ul id="playlist_songs">
+					<li ng-repeat="song in songs.playlist" ng-click="playSong($index)" ng-class="curSong == $index ? 'active' : '';">
+						<i class="fa fa-music indicator"></i>
+						<div class="title">
+							[[song.name]] - [[song.artist]]
+						</div>
+					</li>
+				</ul>
+			</section>
+			<!-- right panel player -->
+			<section class="panel-tab right player" ng-class="rMenu == 'player' ? 'active' : '';">
+				<div class="std-grid">
+					<div class="std-row">
+						<div class="std-xs-12">
+							<div id="player"></div>
+						</div>
+						<div class="std-xs-12">
+							<ul id="player_controls">
+								<li id="play-song"><span class="fa fa-play" ng-click="playerPlay();"></span></li>
+								<li id="stop-song"><span class="fa fa-stop" ng-click="playerStop();"></span></li>
+								<li id="prev-song"><span class="fa fa-backward" ng-click="PlayerBack();"></span></li>
+								<li id="next-song"><span class="fa fa-forward" ng-click="PlayerForw();"></span></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</section>
+		</div>
+	</div>
+
+	<div class="wrapper-flex wrapper-modal" id="main_modal" js-active="false">
+		<div class="std-grid">
+			<div class="std-row modal-form">
+				<div class="std-xs-12 modal-header">
+					<span class="fa fa-close modal-close" id="main_modal_close"></span>
+				</div>
+				<div class="std-xs-12 modal-body" id="main_modal_body"></div>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="wrapper-flex wrapper-modal" js-active="false" id="modal_palylist_create">
+		<div class="std-grid">
+			<div class="std-row modal-form">
+				<div class="std-xs-12 modal-header">
+					<span class="fa fa-close modal-close" ng-click="modalClose('modal_palylist_create')"></span>
+				</div>
+				<div class="std-xs-12 modal-body">
+					<form novalidate ng-submit="createPlaylist()" name="formPlaylist">
+						<div class="std-row">
+							<div class="std-xs-12">
+								<div class="std-form-group">
+									<h2>Create Playlist</h2>
+								</div>
+								<div class="std-form-group">
+									<label>Name</label>
+									<input name="name" type="text" class="std-text-field" ng-model="form.playlist.name" ng-minlength="3" ng-maxlength="64" required>
+									<p ng-show="formPlaylist.name.$error.required && formPlaylist.$dirty" class="std-error">Name is required</p>
+									<p ng-show="formPlaylist.name.$error.minlength" class="std-error">Name is too short.</p>
+									<p ng-show="formPlaylist.name.$error.maxlength" class="std-error">Name is too long.</p>
+								</div>
+								<div class="std-form-group">
+									<label>Privacy</label>
+									<select name="privacy" class="std-text-field" ng-model="form.playlist.privacy">
+										<option value="1" selected="selected">Public</option>
+										<option value="2">Friends</option>
+										<option value="3">Private</option>
+									</select>
+								</div>
+							</div>
+							<div class="std-xs-12 text-right">
+								<button type="submit"  class="std-button modal">Create</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--<script src="{{ static_url }}js/interface.js?v='{{date}}"></script>-->
+	<script>
+		var playlist_load = false;
+		{% if playlist_load %}
+			playlist_load = '{{ playlist_load }}';
+		{% endif %}
+	</script>
+
+</body>
+</html>

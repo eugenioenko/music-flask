@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<title>Music Flask</title>
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+	<link href="{{ static_url }}css/perfect-scrollbar.min.css" rel="stylesheet">
+	<link href="{{ static_url }}css/styles.css?v='date" rel="stylesheet">
+	<script src="{{ static_url }}js/perfect-scrollbar.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.2/angular.min.js" type="text/javascript"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
+</head>
+<body class="login">
+
+{% macro with_errors(field) %}
+    {% if field.errors %}
+        {% set css_class = 'std-text-field error' + kwargs.pop('class', '') %}
+        {{ field(class=css_class, **kwargs) }}
+        <ul class="errors">{% for error in field.errors %}<li>{{ error|e }}</li>{% endfor %}</ul>
+    {% else %}
+        {{ field(**kwargs) }}
+    {% endif %}
+{% endmacro %}
+
+	<style>
+		#wrapper_bg{
+			-webkit-filter: grayscale(1) brightness(3);
+			filter: grayscale(1) brightness(3);
+			transition: -webkit-filter 250ms linear, filter 250ms linear;
+		}
+		a.signup{
+			color: #ff9d00;
+			text-decoration: underline;
+		}
+	</style>
+	<div class="wrapper-bg signup" id="wrapper_bg">
+	</div>
+	<div class="wrapper-flex wrapper-signup">
+		<form method="POST" action="{{ url_for('login') }}" class="std-grid">
+			<div class="std-row signup-form">
+				<div class="std-xs-12">
+					<div class="std-form-group">
+						<h2>Login</h2>
+					</div>
+					{{ form.csrf_token }}
+					<div class="std-form-group">
+						{{ form.email.label }} {{ with_errors(form.email, class_='std-text-field') }}
+					</div>
+					<div class="std-form-group">
+						{{ form.password.label }} {{ with_errors(form.password, class_='std-text-field') }}
+					</div>
+				</div>
+				<div class="std-xs-6">
+					<a href="{{url_for('signup')}}" class="signup"><h4>Signup here</h4></a>
+				</div>
+				<div class="std-xs-6 text-right">
+					<input type="submit" value="Login" class="std-button signup">
+				</div>
+				<div class="std-xs-12">
+					{% with messages = get_flashed_messages() %}
+						{% if messages %}
+						<ul class=flashes>
+							{% for message in messages %}
+							<li>{{ message }}</li>
+							{% endfor %}
+						</ul>
+						{% endif %}
+					{% endwith %}
+				</div>
+			</div>
+		</form>
+	</div>
+<script>
+	var g = 1;
+	var c = 1;
+	$(document).on('keyup', function(){
+		var l = 0;
+		$('input[type="text"], input[type="password"]').each(function( key, value ) {
+			l += $(value).val().length;
+		});
+		g = 1 - (l * 0.03);
+		g < 0 ? g = 0 : g = g;
+		b = 1 + (g * 2);
+		$('#wrapper_bg').css({'-webkit-filter': 'grayscale(' + g + ') brightness(' + b + ')', 'filter': 'grayscale(' + g + ') brightness(' + b + ')'});
+
+	});
+</script>
+</body>
+</html>

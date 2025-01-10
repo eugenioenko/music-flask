@@ -1,0 +1,73 @@
+{% extends "login_layout.html" %}
+
+{% block content %}
+
+{% macro with_errors(field) %}
+    {% if field.errors %}
+        {% set css_class = 'std-text-field error' + kwargs.pop('class', '') %}
+        {{ field(class=css_class, **kwargs) }}
+        <ul class="errors">{% for error in field.errors %}<li>{{ error|e }}</li>{% endfor %}</ul>
+    {% else %}
+        {{ field(**kwargs) }}
+    {% endif %}
+{% endmacro %}
+
+<style>
+	#wrapper_bg{
+		-webkit-filter: grayscale(1) brightness(3);
+		filter: grayscale(1) brightness(3);
+		transition: -webkit-filter 250ms linear, filter 250ms linear;
+	}
+</style>
+<div class="wrapper-bg signup" id="wrapper_bg">
+</div>
+<div class="wrapper-flex wrapper-signup">
+	<form method="POST" action="{{url_for('signup')}}" class="std-grid">
+		<div class="std-row signup-form">
+			<div class="std-xs-12">
+				<div class="std-form-group">
+					<h2>Signup</h2>
+				</div>
+				{{ form.csrf_token }}
+				<div class="std-form-group">
+					{{ form.name.label }} {{ with_errors(form.name, class_='std-text-field') }}
+				</div>
+				<div class="std-form-group">
+					{{ form.email.label }} {{ with_errors(form.email, class_='std-text-field') }}
+				</div>
+				<div class="std-form-group">
+					{{ form.password.label }} {{ with_errors(form.password, class_='std-text-field') }}
+				</div>
+				{% with messages = get_flashed_messages() %}
+					{% if messages %}
+					<ul class="std-list">
+						{% for message in messages %}
+						<li>{{ message }}</li>
+						{% endfor %}
+					</ul>
+					{% endif %}
+				{% endwith %}
+			</div>
+			<div class="std-xs-12 text-right">
+				<input type="submit" value="Signup" class="std-button signup">
+			</div>
+		</div>
+	</form>
+</div>
+<script>
+	var g = 1;
+	var c = 1;
+	$(document).on('keyup', function(){
+		var l = 0;
+		$('input[type="text"], input[type="password"]').each(function( key, value ) {
+			l += $(value).val().length;
+		});
+		g = 1 - (l * 0.03);
+		g < 0 ? g = 0 : g = g;
+		b = 1 + (g * 2);
+		$('#wrapper_bg').css({'-webkit-filter': 'grayscale(' + g + ') brightness(' + b + ')', 'filter': 'grayscale(' + g + ') brightness(' + b + ')'});
+
+	});
+
+</script>
+{% endblock %}

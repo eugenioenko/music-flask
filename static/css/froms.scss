@@ -1,0 +1,99 @@
+$std-transition: cubic-bezier(.14,.6,.89,.44);
+
+.std-form-group{
+	margin-bottom: 30px;
+	position: relative;
+	label{
+		font-size: 1rem;
+		display: block;
+		font-weight: bold;
+		margin-bottom: 5px;
+	}
+	.std-text-field{
+		font-size: 1rem;
+		display: block;
+		width: 100%;
+		border: 1px solid rgba(0, 0, 0, 0.7);
+		border-radius: 1px;
+		outline: none;
+		height: 2.5rem;
+		line-height: 2.5rem;
+		padding: 0px 0.5rem;
+		border-radius: 4px;
+	}
+	.std-error{
+		position: absolute;
+	    bottom: -23px;
+	    left: 0;
+	    margin: 0;
+	}
+}
+.search-bar-group{
+	position: relative;
+	z-index: 9999;
+}
+.std-input-search{
+	display: block;
+	float: left;
+	width: calc(100% - 64px);
+	font-size: 1.3rem;
+	background-color: rgba(0,0,0,0.9);
+	color: #fff;
+	width: calc(100% - 64px);
+	color: #fff;
+	height: 63px;
+	line-height: 63px;
+	padding: 0px 20px;
+	border-radius: 0;
+	border: none;
+	outline: none;
+	&:focus+.std-btn-search{
+		background-color: rgba(25,55,99,1);
+	}
+}
+.std-btn-search{
+	float: left;
+	display: block;
+	width: 64px;
+	height: 63px;
+	line-height: 63px;
+	font-size: 22px;
+	color: #fff;
+	background-color: rgba(28, 111, 144, 0.9);
+	text-align: center;
+	will-change: background-color;
+	transition: background-color 350ms ease-in-out;
+	cursor: pointer;
+	&:hover{
+		background-color: rgba(25, 138, 122, 0.63)!important;
+	}
+}
+.std-button{
+	padding: 0 1rem 0 1rem;
+	margin-top: 0;
+	margin-bottom: 0;
+	font-size: 1rem;
+	font-weight: normal;
+	line-height: 2.5rem;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: middle;
+	-ms-touch-action: manipulation;
+	touch-action: manipulation;
+	cursor: pointer;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	background-image: none;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	z-index: 9999;
+	text-transform: uppercase;
+	font-weight: bold;
+	will-change: background-color, color;
+	transition: color 350ms $std-transition, background-color 450ms $std-transition;
+	&:focus, &:hover, &:active{
+		outline: none;
+	}
+}

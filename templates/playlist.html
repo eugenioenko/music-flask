@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="wrapper-main home" id="panel_main">
+	<div class="std-grid">
+		<div class="std-row">
+			<div class="std-xs-12 search-bar">
+				<div class="std-form-group">
+					<input type="text" class="std-input-search" ng-model="songSearchTerm">
+					<span class="std-button std-button-search" ng-click="searchSong(songSearchTerm)">
+						<span class="fa fa-search"></span>
+					</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="std-grid">
+		<div class="std-row">
+			<div class="std-xs-12">
+				{% raw %}
+				<ul id="song_search_list" class="playlist-results">
+					<li ng-repeat="song in songs.results.trackmatches.track | limitTo: 30">
+						<a href="{{base_url + 'addsong/' + playlist.uuid}}">
+							<span class="title">{{song.artist}} - {{ song.name }}</span>
+						</a>
+					</li>
+				</ul>
+				{% endraw %}
+			</div>
+		</div>
+	</div>
+</div>
+<div id="panel_playlist">
+</div>
+<script>
+	Ps.initialize(document.getElementById('song_search_list'));
+</script>
+{% endblock %}

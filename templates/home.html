@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="wrapper-main home" id="panel_main">
+	<div class="std-grid">
+		<div class="std-row">
+			<div class="std-xs-12 search-bar">
+				<div class="std-form-group">
+					<input type="text" class="std-input-search" ng-model="playlistFilter">
+					<span class="std-button std-button-search">
+						<span class="fa fa-search"></span>
+					</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="std-grid">
+		<div class="std-row">
+			<div class="std-xs-12">
+				{% raw %}
+				<ul id="public_playlist" class="playlist-list">
+					<li ng-repeat="playlist in playlists.public | filter : playlistFilter | limitTo: 30">
+						<a href="{{base_url + 'playlist/' + playlist.uuid}}">
+							<span class="title">{{ playlist.name }}</span>
+							<span class="author"> by: {{ playlist.username }}</span>
+						</a>
+					</li>
+				</ul>
+				{% endraw %}
+			</div>
+		</div>
+	</div>
+</div>
+<div id="panel_playlist" class="home">
+</div>
+<script>
+	Ps.initialize(document.getElementById('public_playlist'));
+</script>
+{% endblock %}
